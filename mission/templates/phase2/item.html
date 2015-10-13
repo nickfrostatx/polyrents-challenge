@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block title %}PolyRents Challenge - Phase 2{% endblock %}
+
+{% block body %}
+    <h1>To-Do Item #{{ item }}</h1>
+    <h3>{{ message }}</h3>
+    <p><a href="{{ url_for('phase2.dashboard') }}">&lt; Back</a></p>
+{%- endblock %}

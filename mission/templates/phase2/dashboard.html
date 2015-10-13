@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}PolyRents Challenge - Phase 2{% endblock %}
+
+{% block body %}
+    <h1>To-Do List</h1>
+    <ol>
+      {%- for item_id in items|sort %}
+      <li><a href="{{ url_for('phase2.dashboard') }}{{ g.username }}/{{ item_id }}/">{{ items[item_id] }}</a></li>
+      {%- endfor %}
+    </ol>
+{%- endblock %}

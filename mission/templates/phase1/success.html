@@ -1,11 +1,8 @@
-<!doctype html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>PolyRents Challenge - Phase 1</title>
-  </head>
-  <body>
-    <h1>Authenticated</h1>
+{% extends "base.html" %}
+
+{% block title %}PolyRents Challenge - Phase 1{% endblock %}
+
+{% block body %}
+    <h1 class="green">Authenticated</h1>
     <p>Continue on to <a href="{{ url_for('phase2.home') }}">Phase 2</a></p>
-  </body>
-</html>
+{%- endblock %}

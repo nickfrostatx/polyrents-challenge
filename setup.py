@@ -10,6 +10,8 @@ setup(
     description='Application security challenge',
     include_package_data=True,
     install_requires=[
+        'bcrypt',
         'Flask',
+        'redis',
     ],
 )
