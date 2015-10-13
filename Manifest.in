@@ -1,0 +1,5 @@
+include Procfile requirements.txt runtime.txt
+recursive-include mission/templates *
+recursive-include tests *
+recursive-exclude * __pycache__
+recursive-exclude * *.py[cod]
