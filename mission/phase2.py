@@ -67,9 +67,9 @@ def dashboard():
     if g.username == 'admin':
         return render_template('phase2/success.html')
     else:
-        item_ids = current_app.redis.lrange('user:%s:items' % g.username, 0, -1)
+        ids = current_app.redis.lrange('user:%s:items' % g.username, 0, -1)
         items = {}
-        for i in item_ids:
+        for i in ids:
             i = i.decode('utf-8')
             message = current_app.redis.get('user:%s:%s' % (g.username, i))
             items[i] = message.decode('utf-8')
