@@ -3,6 +3,7 @@
 {% block title %}PolyRents Challenge - Phase 2{% endblock %}
 
 {% block body %}
+    <p><a href="{{ url_for('phase2.home') }}">&lt; Back to login</a></p>
     <h1>To-Do List</h1>
     <ol>
       {%- for item_id in items|sort %}
