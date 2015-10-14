@@ -19,7 +19,7 @@ def random_string():
 
 
 def test_login(username, password):
-    password = bytes(password, 'utf-8')
+    password = password.encode('utf-8')
     pw_hash = current_app.redis.get('user:%s:password' % username)
     if not pw_hash:
         return False
