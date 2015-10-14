@@ -120,7 +120,7 @@ def test_solution(app):
 
     rv = app.get(url, headers={'Cookie': 'session=%s' % session_key})
     assert rv.status_code == 200
-    assert bytes(admin_hash, 'utf-8') in rv.data
+    assert admin_hash.encode('utf-8') in rv.data
 
 
 def test_admin_dashboard(app):
