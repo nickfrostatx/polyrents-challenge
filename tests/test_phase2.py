@@ -16,7 +16,7 @@ def init_data(redis):
     redis.set('user:test:1', 'Buy groceries')
     redis.set('user:test:2', 'Clean the patio')
     redis.set('user:test:3', 'Take over the world')
-    redis.rpush('user:test:items', 1, 2, 3)
+    redis.rpush('items:test', 1, 2, 3)
     redis.set('session:%s' % session_key, 'test')
     redis.set('session:%s' % admin_session_key, 'admin')
     return app
@@ -95,6 +95,8 @@ def test_dashboard(app):
 
     rv = app.get(url, headers={'Cookie': 'session=%s' % session_key})
     assert rv.status_code == 200
+    assert b'Buy groceries' in rv.data
+    assert b'Take over the world' in rv.data
 
 
 def test_item_404(app):
