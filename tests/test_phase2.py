@@ -5,7 +5,7 @@ import os
 
 phase2_url = '/phase2-%s/' % os.environ.get('PHASE2_TOKEN')
 admin_password = u'adminpass'
-admin_hash = hashlib.sha1(bytes(admin_password, 'utf-8')).hexdigest()
+admin_hash = hashlib.sha1(admin_password.encode('utf-8')).hexdigest()
 session_key = 'sessionkey'
 admin_session_key = 'adminsessionkey'
 
