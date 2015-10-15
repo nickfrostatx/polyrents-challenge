@@ -9,21 +9,13 @@ Definitely no security holes here
 from flask import Blueprint, abort, current_app, g, request, redirect, \
                   render_template, url_for
 from werkzeug.security import safe_str_cmp
-from functools import wraps
+from .session import create_session, require_auth
 import hashlib
 import os
-import random
-import string
 
 
 url_prefix = '/phase2-%s/' % os.environ.get('PHASE2_TOKEN')
 phase2 = Blueprint('phase2', __name__, url_prefix=url_prefix)
-
-
-def random_string():
-    """Return 32 random alphanumeric characters"""
-    letters = string.ascii_letters + string.digits
-    return ''.join(random.choice(letters) for x in range(32))
 
 
 def test_login(username, password):
@@ -34,20 +26,6 @@ def test_login(username, password):
     if not safe_str_cmp(hashlib.sha1(password).hexdigest(), pw_hash):
         return False
     return True
-
-
-def require_auth(fn):
-    @wraps(fn)
-    def inner(*args, **kwargs):
-        session_token = request.cookies.get('session')
-        if not session_token:
-            abort(403)
-        g.username = current_app.redis.get('session:%s' % session_token)
-        if not g.username:
-            abort(403)
-        g.username = g.username.decode('utf-8')
-        return fn(*args, **kwargs)
-    return inner
 
 
 @phase2.route('')
@@ -62,10 +40,9 @@ def login():
     username = request.form.get('username', '')
     password = request.form.get('password', '')
     if test_login(username, password):
-        session_token = random_string()
-        current_app.redis.set('session:%s' % session_token, username)
+        # Successful login
         resp = redirect(url_for('phase2.dashboard'), code=303)
-        resp.set_cookie('session', session_token)
+        create_session(resp, username)
         return resp
     else:
         # Invalid login
