@@ -14,13 +14,13 @@ import hashlib
 import os
 
 
-url_prefix = '/phase2-%s/' % os.environ.get('PHASE2_TOKEN')
+url_prefix = '/phase2-' + os.environ.get('PHASE2_TOKEN') + '/'
 phase2 = Blueprint('phase2', __name__, url_prefix=url_prefix)
 
 
 def test_login(username, password):
     password = password.encode('utf-8')
-    pw_hash = current_app.redis.get('user:%s:password' % username)
+    pw_hash = current_app.redis.get('user:' + username + ':password')
     if not pw_hash:
         return False
     if not safe_str_cmp(hashlib.sha1(password).hexdigest(), pw_hash):
@@ -55,12 +55,12 @@ def dashboard():
     """Either display the to-do list, or the admin panel"""
     if g.username != 'admin':
         # Load the list of ids ids of to-do items for the curent user
-        ids = current_app.redis.lrange('items:%s' % g.username, 0, -1)
+        ids = current_app.redis.lrange('items:' + g.username, 0, -1)
         # For each item, load its message from the database
         items = {}
         for i in ids:
             i = i.decode('utf-8')
-            message = current_app.redis.get('user:%s:%s' % (g.username, i))
+            message = current_app.redis.get('user:' + g.username + ':' + i)
             items[i] = message.decode('utf-8')
         return render_template('phase2/dashboard.html', items=items)
     else:
@@ -71,7 +71,7 @@ def dashboard():
 @require_auth  # This sets global "g.username" to the session username
 def todo_item(username, item_id):
     """View a the message of a single to-do item"""
-    message = current_app.redis.get('user:%s:%s' % (username, item_id))
+    message = current_app.redis.get('user:' + username + ':' + item_id)
     if not message:
         abort(404)
     message = message.decode('utf-8')
