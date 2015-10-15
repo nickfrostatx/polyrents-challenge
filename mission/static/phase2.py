@@ -1,3 +1,11 @@
+# -*- coding: utf-8 -*-
+"""
+This is a super secure to-do list app
+
+Definitely no security holes here
+"""
+
+
 from flask import Blueprint, abort, current_app, g, request, redirect, \
                   render_template, url_for
 from werkzeug.security import safe_str_cmp
@@ -44,11 +52,13 @@ def require_auth(fn):
 
 @phase2.route('')
 def home():
+    """The login form"""
     return render_template('phase2/home.html')
 
 
 @phase2.route('login/', methods=['POST'])
 def login():
+    """Submit a login attempt"""
     username = request.form.get('username', '')
     password = request.form.get('password', '')
     if test_login(username, password):
@@ -58,27 +68,32 @@ def login():
         resp.set_cookie('session', session_token)
         return resp
     else:
+        # Invalid login
         return redirect(url_for('phase2.home'), code=303)
 
 
 @phase2.route('dashboard/')
-@require_auth
+@require_auth  # This sets global "g.username" to the session username
 def dashboard():
-    if g.username == 'admin':
-        return render_template('phase2/success.html')
-    else:
+    """Either display the to-do list, or the admin panel"""
+    if g.username != 'admin':
+        # Load the list of ids ids of to-do items for the curent user
         ids = current_app.redis.lrange('items:%s' % g.username, 0, -1)
+        # For each item, load its message from the database
         items = {}
         for i in ids:
             i = i.decode('utf-8')
             message = current_app.redis.get('user:%s:%s' % (g.username, i))
             items[i] = message.decode('utf-8')
         return render_template('phase2/dashboard.html', items=items)
+    else:
+        return render_template('phase2/success.html')
 
 
 @phase2.route('dashboard/<username>/<item_id>/')
-@require_auth
+@require_auth  # This sets global "g.username" to the session username
 def todo_item(username, item_id):
+    """View a the message of a single to-do item"""
     message = current_app.redis.get('user:%s:%s' % (username, item_id))
     if not message:
         abort(404)
