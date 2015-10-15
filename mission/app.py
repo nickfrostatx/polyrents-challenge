@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Create the application object containing the two phases
+
+Also add route to listen on /, and redirect to /phase1/
+"""
+
 from flask import Flask, redirect, url_for
 from . import __name__ as package_name
 from .phase1 import phase1
