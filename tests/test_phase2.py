@@ -23,8 +23,8 @@ def init_data(redis):
 
 def test_home(app):
     rv = app.get(phase2_url)
-    assert rv.status_code == 200
     assert b'Sign In' in rv.data
+    assert rv.status_code == 200
 
 
 def test_404(app):
@@ -58,20 +58,20 @@ def test_bad_login(app):
     init_data(app.application.redis)
 
     rv = app.post(url)
-    assert rv.status_code == 303
     assert 'dashboard' not in rv.headers.get('Location')
+    assert rv.status_code == 303
 
     rv = app.post(url, data={'username': 'abcdef', 'password': 'abcdef'})
-    assert rv.status_code == 303
     assert 'dashboard' not in rv.headers.get('Location')
+    assert rv.status_code == 303
 
     rv = app.post(url, data={'username': 'test'})
-    assert rv.status_code == 303
     assert 'dashboard' not in rv.headers.get('Location')
+    assert rv.status_code == 303
 
     rv = app.post(url, data={'username': 'test', 'password': 'abcdef'})
-    assert rv.status_code == 303
     assert 'dashboard' not in rv.headers.get('Location')
+    assert rv.status_code == 303
 
 
 def test_good_login(app):
@@ -94,9 +94,9 @@ def test_dashboard(app):
     init_data(app.application.redis)
 
     rv = app.get(url, headers={'Cookie': 'session=%s' % session_key})
-    assert rv.status_code == 200
     assert b'Buy groceries' in rv.data
     assert b'Take over the world' in rv.data
+    assert rv.status_code == 200
 
 
 def test_item_404(app):
@@ -121,8 +121,8 @@ def test_solution(app):
     init_data(app.application.redis)
 
     rv = app.get(url, headers={'Cookie': 'session=%s' % session_key})
-    assert rv.status_code == 200
     assert admin_hash.encode('utf-8') in rv.data
+    assert rv.status_code == 200
 
 
 def test_admin_dashboard(app):
@@ -130,5 +130,5 @@ def test_admin_dashboard(app):
     init_data(app.application.redis)
 
     rv = app.get(url, headers={'Cookie': 'session=%s' % admin_session_key})
-    assert rv.status_code == 200
     assert b'Challenge complete!' in rv.data
+    assert rv.status_code == 200
