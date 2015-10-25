@@ -23,7 +23,8 @@ app.register_blueprint(phase2)
 def setup_redis():
     if app.config.get('TESTING'):
         return
-    app.redis = redis.from_url(os.environ.get('REDIS_URL', 'redis://localhost'))
+    app.redis = redis.from_url(os.environ.get('REDIS_URL',
+                                              'redis://localhost'))
 
 
 @app.route('/')
