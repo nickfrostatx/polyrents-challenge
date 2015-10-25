@@ -4,14 +4,13 @@ python:
   - '3.5'
 
 env:
-  - TOXENV=py26
-  - TOXENV=py27
-  - TOXENV=pypy
-  - TOXENV=py33
-  - TOXENV=py34
-  - TOXENV=py35
+  - TOXENV=py35,coveralls
+  - TOXENV=py34,coveralls
+  - TOXENV=py33,coveralls
+  - TOXENV=py27,coveralls
+  - TOXENV=py26,coveralls
+  - TOXENV=pypy,coveralls
 
-install:
-  - pip install tox
+install: pip install tox
 
 script: tox
