@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-This is a super secure to-do list app
+This is a super secure to-do list app.
 
 Definitely no security holes here
 """
@@ -30,13 +30,13 @@ def test_login(username, password):
 
 @phase2.route('')
 def home():
-    """The login form"""
+    """The login form."""
     return render_template('phase2/home.html')
 
 
 @phase2.route('login/', methods=['POST'])
 def login():
-    """Submit a login attempt"""
+    """Submit a login attempt."""
     username = request.form.get('username', '')
     password = request.form.get('password', '')
     if test_login(username, password):
@@ -52,7 +52,7 @@ def login():
 @phase2.route('dashboard/')
 @require_auth  # This sets global "g.username" to the session username
 def dashboard():
-    """Either display the to-do list, or the admin panel"""
+    """Either display the to-do list, or the admin panel."""
     if g.username != 'admin':
         # Load the list of ids ids of to-do items for the curent user
         ids = current_app.redis.lrange('items:' + g.username, 0, -1)
@@ -70,7 +70,7 @@ def dashboard():
 @phase2.route('dashboard/<username>/<item_id>/')
 @require_auth  # This sets global "g.username" to the session username
 def todo_item(username, item_id):
-    """View a the message of a single to-do item"""
+    """View a the message of a single to-do item."""
     message = current_app.redis.get('user:' + username + ':' + item_id)
     if not message:
         abort(404)

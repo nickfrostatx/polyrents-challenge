@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Create the application object containing the two phases
+Create the application object containing the two phases.
 
 Also add route to listen on /, and redirect to /phase1/
 """

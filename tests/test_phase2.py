@@ -2,7 +2,6 @@ from util import app
 import hashlib
 import os
 
-
 phase2_url = '/phase2-%s/' % os.environ.get('PHASE2_TOKEN')
 admin_password = u'adminpass'
 admin_hash = hashlib.sha1(admin_password.encode('utf-8')).hexdigest()
@@ -39,15 +38,16 @@ def test_get_405(app):
 
 
 def test_403s(app):
-    """These should return 403 instead of 404"""
+    """These should return 403 instead of 404."""
     for url in ('dashboard/', 'dashboard/test/1/', 'dashboard/abc/def/'):
         rv = app.get(phase2_url + url)
         assert rv.status_code == 403
         rv = app.get(phase2_url + url, headers={'Cookie': 'session=asdf'})
+        assert rv.status_code == 403
 
 
 def test_post_405(app):
-    """Be sure this returns 405, instead of 404 or 403"""
+    """Be sure this returns 405, instead of 404 or 403."""
     for url in ('', 'dashboard/', 'dashboard/test/1/', 'dashboard/abc/def/'):
         rv = app.post(phase2_url + url)
         assert rv.status_code == 405
