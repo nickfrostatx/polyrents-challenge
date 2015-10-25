@@ -4,6 +4,9 @@ PolyRents Challenge
 .. image:: https://img.shields.io/travis/nickfrostatx/polyrents-challenge.svg
     :target: https://travis-ci.org/nickfrostatx/polyrents-challenge
 
+.. image:: https://img.shields.io/coveralls/nickfrostatx/polyrents-challenge.svg
+    :target: https://coveralls.io/github//nickfrostatx/polyrents-challenge
+
 .. image:: https://img.shields.io/pypi/v/polyrents-challenge.svg
     :target: https://pypi.python.org/pypi/polyrents-challenge
 
